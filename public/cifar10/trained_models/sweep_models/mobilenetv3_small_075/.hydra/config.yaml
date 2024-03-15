@@ -52,7 +52,6 @@ trainer:
   strategy: auto
   reload_dataloaders_every_n_epochs: 0
   precision: 16
-  enable_model_summary: false
 checkpoint:
   _target_: pytorch_lightning.callbacks.ModelCheckpoint
   dirpath: checkpoints

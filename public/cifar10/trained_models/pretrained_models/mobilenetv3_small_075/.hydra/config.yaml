@@ -7,7 +7,10 @@ features:
   _target_: torch.nn.Identity
 model:
   _target_: hannah.models.timm.TimmModel
-  name: resnet50
+  name: mobilenetv3_small_075
+  drop_rate: 0.3
+  drop_path_rate: 0.2
+  pretrained: true
 scheduler:
   _target_: torch.optim.lr_scheduler.OneCycleLR
   max_lr: ${optimizer.lr}
@@ -50,7 +53,6 @@ trainer:
   strategy: auto
   reload_dataloaders_every_n_epochs: 0
   precision: 16
-  enable_model_summary: false
 checkpoint:
   _target_: pytorch_lightning.callbacks.ModelCheckpoint
   dirpath: checkpoints
@@ -86,7 +88,7 @@ augmentation:
         padding: 4
       RandomErasing:
         p: 0.5
-experiment_id: test
+experiment_id: pretrained_models
 output_dir: trained_models
 auto_lr: false
 resume: false

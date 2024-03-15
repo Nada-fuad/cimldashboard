@@ -3,13 +3,15 @@ hydra:
     dir: ${output_dir}/${experiment_id}/${model.name}/
   sweep:
     dir: ${output_dir}/${experiment_id}/
-    subdir: ${model.name}/${hydra.job.num}
+    subdir: ${model.name}
   launcher:
     _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
   sweeper:
     _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
     max_batch_size: null
-    params: null
+    params:
+      model: timm_resnet18,timm_mobilenetv3_small_075
+      +model.pretrained: 'True'
   help:
     app_name: ${hydra.job.name}
     header: '${hydra.help.app_name} is powered by Hydra.
@@ -121,21 +123,22 @@ hydra:
         level: WARNING
     disable_existing_loggers: false
   env: {}
-  mode: RUN
+  mode: MULTIRUN
   searchpath: []
   callbacks: {}
   output_subdir: .hydra
   overrides:
-    hydra:
-    - hydra.mode=RUN
+    hydra: []
     task:
-    - model=timm_resnet50
+    - model=timm_mobilenetv3_small_075
+    - +model.pretrained=True
+    - +experiment=pretrained_models
   job:
     name: train
     chdir: true
-    override_dirname: model=timm_resnet50
-    id: ???
-    num: ???
+    override_dirname: +experiment=pretrained_models,+model.pretrained=True,model=timm_mobilenetv3_small_075
+    id: '1'
+    num: 1
     config_name: config
     env_set: {}
     env_copy: []
@@ -167,8 +170,9 @@ hydra:
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /local/gerum/hannah/experiments/cifar10/trained_models/test/resnet50
+    output_dir: /local/gerum/hannah/experiments/cifar10/trained_models/pretrained_models/mobilenetv3_small_075
     choices:
+      experiment: pretrained_models
       pseudo_labeling: null
       nas: null
       fine_tuning: null
@@ -183,7 +187,7 @@ hydra:
       normalizer: null
       optimizer: sgd
       scheduler: 1cycle
-      model: timm_resnet50
+      model: timm_mobilenetv3_small_075
       features: identity
       unlabeled_data: null
       dataset: cifar10

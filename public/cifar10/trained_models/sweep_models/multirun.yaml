@@ -10,7 +10,7 @@ hydra:
     _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
     max_batch_size: null
     params:
-      model: timm_resnet18,timm_mobilenetv3_small_075,timm_mobilenetv3_small_100,kakao_resnet8
+      model: timm_resnet50,timm_resnet18,timm_mobilenetv3_small_075,timm_mobilenetv3_small_100,kakao_resnet8
   help:
     app_name: ${hydra.job.name}
     header: '${hydra.help.app_name} is powered by Hydra.
@@ -251,7 +251,6 @@ trainer:
   strategy: auto
   reload_dataloaders_every_n_epochs: 0
   precision: 16
-  enable_model_summary: false
 checkpoint:
   _target_: pytorch_lightning.callbacks.ModelCheckpoint
   dirpath: checkpoints
